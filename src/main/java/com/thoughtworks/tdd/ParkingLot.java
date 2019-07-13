@@ -12,16 +12,25 @@ public class ParkingLot {
     }
 
     public Ticket parkCar(Car car) {
-        if(isFull())
-            return  null;
-        Ticket ticket = new Ticket();
+        if (isFull()){
+            System.out.println("停车场已满");
+            return null;
+        }
+        Ticket ticket = new Ticket(car);
         storeCars.put(ticket, car);
         return ticket;
     }
 
     public Car fetchCar(Ticket ticket) {
-        Car fetchCar = storeCars.get(ticket);
-        storeCars.remove(ticket);
+        Car fetchCar = null;
+        if (ticket == null) {
+            System.out.println("无效小票");
+            return null;
+        }
+        if (!ticket.isUsed()) {
+            fetchCar = storeCars.get(ticket);
+            storeCars.remove(ticket);
+        }
         return fetchCar;
     }
 
