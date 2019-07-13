@@ -28,6 +28,7 @@ public class ParkingLot {
             return null;
         }
         if (!ticket.isUsed()) {
+            ticket.useTicket();
             fetchCar = storeCars.get(ticket);
             storeCars.remove(ticket);
         }
