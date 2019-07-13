@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,5 +23,19 @@ public class ParkingLotTest {
         Ticket ticket = parkingLot.parkCar(car);
         //then
         assertEquals(car,parkingLot.fetchCar(ticket));
+    }
+
+    @Test
+    public void should_return_null_when_fetchCar_given_the_full_storage() {
+        //given
+        ParkingLot parkingLot = new ParkingLot(1);
+        Car car1 = new Car();
+        Car car2 = new Car();
+        //when
+        Ticket ticket1 = parkingLot.parkCar(car1);
+        Ticket ticket2 = parkingLot.parkCar(car2);
+        //then
+        assertEquals(car1,parkingLot.fetchCar(ticket1));
+        assertNull(parkingLot.fetchCar(ticket2));
     }
 }
