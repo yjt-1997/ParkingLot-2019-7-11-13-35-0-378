@@ -52,4 +52,17 @@ public class ParkingBoyTest {
         assertEquals(car1,parkingLot.fetchCar(ticket1));
         assertEquals(car2,parkingLot.fetchCar(ticket2));
     }
+
+    @Test
+    public void should_return_null_when_fetchCar_given_null(){
+        //given
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+
+        //when
+        Car car1 = new Car();
+        Ticket ticket1 = parkingBoy.parkCar(car1);
+        //then
+        assertNull(parkingBoy.fetchCar(null));
+    }
 }
