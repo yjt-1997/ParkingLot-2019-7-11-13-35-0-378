@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SmartParkingBoyTest {
+public class MostSmartParkingBoyTest {
 
     private ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
@@ -33,14 +33,16 @@ public class SmartParkingBoyTest {
         List<ParkingLot> parkingLots = new ArrayList<>();
         parkingLots.add(new ParkingLot());
         parkingLots.add(new ParkingLot(4));
-        SmartParkingBoy smartParkingBoy = new SmartParkingBoy(parkingLots);
+        MostSmartParkingBoy mostSmartParkingBoy = new MostSmartParkingBoy(parkingLots);
         //when
-        Ticket ticket1 = smartParkingBoy.parkCar(new Car());
-        Ticket ticket2 = smartParkingBoy.parkCar(new Car());
+        Ticket ticket1 = mostSmartParkingBoy.parkCar(new Car());
+        Ticket ticket2 = mostSmartParkingBoy.parkCar(new Car());
+        Ticket ticket3 = mostSmartParkingBoy.parkCar(new Car());
         //then
         assertNotNull(ticket1);
         assertNotNull(ticket1);
-        assertThat(smartParkingBoy.getParkingLots().get(0).getStoreCars().size(),is(2));
-        assertThat(smartParkingBoy.getParkingLots().get(1).getStoreCars().size(),is(0));
+        assertNotNull(ticket3);
+        assertThat(mostSmartParkingBoy.getParkingLots().get(0).getStoreCars().size(),is(2));
+        assertThat(mostSmartParkingBoy.getParkingLots().get(1).getStoreCars().size(),is(1));
     }
 }

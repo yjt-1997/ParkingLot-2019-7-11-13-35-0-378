@@ -1,5 +1,6 @@
 package com.thoughtworks.tdd;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,10 +38,19 @@ public class ParkingLot {
             ticket.useTicket();
             fetchCar = storeCars.get(ticket);
             storeCars.remove(ticket);
-        }else{
+        } else {
             System.out.print("未识别的停车单\n");
         }
         return fetchCar;
+    }
+
+    public int getRemainder() {
+        return capacity - storeCars.size();
+    }
+
+    public double getRemainderRate() {
+        double result = 1 - storeCars.size() / (capacity * 1.0);
+        return result * 100 / 100;
     }
 
     public ParkingLot() {
