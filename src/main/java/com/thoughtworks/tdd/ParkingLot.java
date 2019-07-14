@@ -7,6 +7,7 @@ import java.util.Map;
 public class ParkingLot {
     private final int capacity;
     private Map<Ticket, Car> storeCars;
+    private Manager manager;
 
     public boolean isFull() {
         return storeCars.size() >= capacity;
@@ -64,5 +65,13 @@ public class ParkingLot {
 
     public Map<Ticket, Car> getStoreCars() {
         return storeCars;
+    }
+
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
     }
 }
