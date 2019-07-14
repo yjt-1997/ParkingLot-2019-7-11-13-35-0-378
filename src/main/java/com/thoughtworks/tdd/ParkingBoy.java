@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingBoy {
-    private List<ParkingLot> parkingLots;
-    private List<Ticket> tickets;
+    protected List<ParkingLot> parkingLots;
+    protected List<Ticket> tickets;
 
     public Ticket parkCar(Car car) {
         for (ParkingLot parkingLot : parkingLots) {
@@ -38,5 +38,9 @@ public class ParkingBoy {
 
     public void addParkingLot(ParkingLot parkingLot){
         parkingLots.add(parkingLot);
+    }
+
+    public List<ParkingLot> getParkingLots() {
+        return parkingLots;
     }
 }
