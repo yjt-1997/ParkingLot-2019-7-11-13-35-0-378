@@ -12,10 +12,6 @@ public class ParkingLot {
     }
 
     public Ticket parkCar(Car car) {
-        if (isFull()) {
-            System.out.print("位置不足\n");
-            return null;
-        }
         if (car == null) {
             System.out.print("请提供您的停车票\n");
             return null;
@@ -54,5 +50,9 @@ public class ParkingLot {
     public ParkingLot(int capacity) {
         this.capacity = capacity;
         storeCars = new HashMap<>(capacity);
+    }
+
+    public Map<Ticket, Car> getStoreCars() {
+        return storeCars;
     }
 }

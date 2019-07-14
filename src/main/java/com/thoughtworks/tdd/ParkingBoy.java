@@ -4,19 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingBoy {
-    private ParkingLot parkingLot;
+    private List<ParkingLot> parkingLots;
     private List<Ticket> tickets;
 
-    public Ticket parkCar(Car car){
-        return parkingLot.parkCar(car);
+    public Ticket parkCar(Car car) {
+        for (ParkingLot parkingLot : parkingLots) {
+            if (!parkingLot.isFull())
+                return parkingLot.parkCar(car);
+        }
+        System.out.print("位置不足\n");
+        return null;
     }
 
-    public Car fetchCar(Ticket ticket){
-        return parkingLot.fetchCar(ticket);
+    public Car fetchCar(Ticket ticket) {
+        if (ticket == null || ticket.isUsed()) {
+            System.out.print("未识别的停车单\n");
+            return null;
+        }
+        Car fetchCar = null;
+        for (ParkingLot parkingLot : parkingLots) {
+            if (parkingLot.getStoreCars().containsKey(ticket)) {
+                fetchCar = parkingLot.fetchCar(ticket);
+                break;
+            }
+        }
+        return fetchCar;
     }
 
-    public ParkingBoy(ParkingLot parkingLot) {
-        this.parkingLot = parkingLot;
+    public ParkingBoy(List<ParkingLot> parkingLots) {
+        this.parkingLots = parkingLots;
         tickets = new ArrayList<>();
+    }
+
+    public void addParkingLot(ParkingLot parkingLot){
+        parkingLots.add(parkingLot);
     }
 }
