@@ -12,9 +12,19 @@ public class ParkingLot {
     }
 
     public Ticket parkCar(Car car) {
-        if (isFull()){
+        if (isFull()) {
             System.out.println("停车场已满");
             return null;
+        }
+        if (car == null) {
+            System.out.println("无效车");
+            return null;
+        }
+        for (Ticket ticket : storeCars.keySet()) {
+            if (storeCars.get(ticket).equals(car)) {
+                System.out.println("这辆车已经停过了");
+                return null;
+            }
         }
         Ticket ticket = new Ticket(car);
         storeCars.put(ticket, car);

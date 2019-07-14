@@ -1,8 +1,5 @@
 package com.thoughtworks.tdd;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -93,5 +90,31 @@ public class ParkingBoyTest {
         Ticket result = parkingBoy.parkCar(car3);
         //then
         assertNull(parkingBoy.fetchCar(result));
+    }
+
+    @Test
+    public void should_return_null_when_parkCar_given_the_parkedCar() {
+        //given
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        //when
+        Car car1 = new Car();;
+        parkingBoy.parkCar(car1);
+        Ticket result = parkingBoy.parkCar(car1);
+        //then
+        assertNull(result);
+    }
+
+    @Test
+    public void should_return_null_when_parkCar_given_the_nullCar() {
+        //given
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        //when
+        Car car1 = new Car();;
+        parkingBoy.parkCar(car1);
+        Ticket result = parkingBoy.parkCar(null);
+        //then
+        assertNull(result);
     }
 }
