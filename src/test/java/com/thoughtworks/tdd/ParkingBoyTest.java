@@ -1,14 +1,29 @@
 package com.thoughtworks.tdd;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ParkingBoyTest {
+
+    private ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
+    @Before
+    public void setup() {
+        System.setOut(new PrintStream(outContent));
+    }
+
+    private String systemOut() {
+        return outContent.toString();
+    }
 
     @Test
     public void should_return_Ticket_when_parkCar_given_Car() {
@@ -77,28 +92,12 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_return_null_when_parkCar_given_the_full_parkinglot() {
-        //given
-        ParkingLot parkingLot = new ParkingLot(2);
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
-        //when
-        Car car1 = new Car();
-        Car car2 = new Car();
-        Car car3 = new Car();
-        parkingBoy.parkCar(car1);
-        parkingBoy.parkCar(car2);
-        Ticket result = parkingBoy.parkCar(car3);
-        //then
-        assertNull(parkingBoy.fetchCar(result));
-    }
-
-    @Test
     public void should_return_null_when_parkCar_given_the_parkedCar() {
         //given
         ParkingLot parkingLot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
         //when
-        Car car1 = new Car();;
+        Car car1 = new Car();
         parkingBoy.parkCar(car1);
         Ticket result = parkingBoy.parkCar(car1);
         //then
@@ -106,15 +105,44 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_return_null_when_parkCar_given_the_nullCar() {
+    public void should_return_message_when_parkCar_given_the_usedTicket() {
         //given
         ParkingLot parkingLot = new ParkingLot();
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
         //when
-        Car car1 = new Car();;
+        Car car1 = new Car();
+        Ticket ticket = parkingBoy.parkCar(car1);
+        parkingBoy.fetchCar(ticket);
+        Car car = parkingBoy.fetchCar(ticket);
+        //then
+        assertNull(car);
+        assertThat(systemOut(), is("未识别的停车单\n"));
+    }
+
+    @Test
+    public void should_return_message_when_parkCar_given_the_nullCar() {
+        //given
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        //when
+        Car car1 = new Car();
         parkingBoy.parkCar(car1);
         Ticket result = parkingBoy.parkCar(null);
         //then
         assertNull(result);
+        assertThat(systemOut(), is("请提供您的停车票\n"));
+    }
+
+    @Test
+    public void should_return_messgae_when_parkCar_given_the_full_parkinglot() {
+        //given
+        ParkingLot parkingLot = new ParkingLot(1);
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        //when
+        parkingBoy.parkCar(new Car());
+        Ticket result = parkingBoy.parkCar(new Car());
+        //then
+        assertNull(result);
+        assertThat(systemOut(), is("位置不足\n"));
     }
 }

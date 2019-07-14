@@ -13,16 +13,16 @@ public class ParkingLot {
 
     public Ticket parkCar(Car car) {
         if (isFull()) {
-            System.out.println("停车场已满");
+            System.out.print("位置不足\n");
             return null;
         }
         if (car == null) {
-            System.out.println("无效车");
+            System.out.print("请提供您的停车票\n");
             return null;
         }
         for (Ticket ticket : storeCars.keySet()) {
             if (storeCars.get(ticket).equals(car)) {
-                System.out.println("这辆车已经停过了");
+                System.out.print("这辆车已经停过了\n");
                 return null;
             }
         }
@@ -34,13 +34,15 @@ public class ParkingLot {
     public Car fetchCar(Ticket ticket) {
         Car fetchCar = null;
         if (ticket == null) {
-            System.out.println("无效小票");
+            System.out.print("未识别的停车单\n");
             return null;
         }
         if (!ticket.isUsed()) {
             ticket.useTicket();
             fetchCar = storeCars.get(ticket);
             storeCars.remove(ticket);
+        }else{
+            System.out.print("未识别的停车单\n");
         }
         return fetchCar;
     }

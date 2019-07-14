@@ -8,8 +8,6 @@ public class ParkingBoy {
     private List<Ticket> tickets;
 
     public Ticket parkCar(Car car){
-        if(parkingLot.isFull())
-            return null;
         return parkingLot.parkCar(car);
     }
 
