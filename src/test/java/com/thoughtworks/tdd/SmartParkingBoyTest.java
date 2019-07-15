@@ -29,18 +29,17 @@ public class SmartParkingBoyTest {
 
     @Test
     public void should_parkToDifferent_lot_when_parkCar_given_several_Car() {
-        //given
         List<ParkingLot> parkingLots = new ArrayList<>();
-        parkingLots.add(new ParkingLot());
-        parkingLots.add(new ParkingLot(4));
-        SmartParkingBoy smartParkingBoy = new SmartParkingBoy(parkingLots);
-        //when
+        ParkingLot parkingLot1 = new ParkingLot();
+        ParkingLot parkingLot2 = new ParkingLot(4);
+        SmartParkingBoy smartParkingBoy = new SmartParkingBoy(parkingLot1,parkingLot2);
+
         Ticket ticket1 = smartParkingBoy.parkCar(new Car());
         Ticket ticket2 = smartParkingBoy.parkCar(new Car());
-        //then
+
         assertNotNull(ticket1);
-        assertNotNull(ticket1);
-        assertThat(smartParkingBoy.getParkingLots().get(0).getStoreCars().size(),is(2));
-        assertThat(smartParkingBoy.getParkingLots().get(1).getStoreCars().size(),is(0));
+        assertNotNull(ticket2);
+        assertThat(parkingLot1.getStoreCars().size(),is(2));
+        assertThat(parkingLot2.getStoreCars().size(),is(0));
     }
 }

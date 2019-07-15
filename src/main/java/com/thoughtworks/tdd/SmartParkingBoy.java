@@ -2,7 +2,7 @@ package com.thoughtworks.tdd;
 
 import java.util.List;
 
-public class SmartParkingBoy extends ParkingBoy {
+public class SmartParkingBoy extends Parker{
 
     @Override
     public Ticket parkCar(Car car) {
@@ -22,7 +22,7 @@ public class SmartParkingBoy extends ParkingBoy {
         return parkingLots.get(index).parkCar(car);
     }
 
-    public SmartParkingBoy(List<ParkingLot> parkingLots) {
+    public SmartParkingBoy(ParkingLot... parkingLots) {
         super(parkingLots);
     }
 }

@@ -29,42 +29,28 @@ public class ManagerTest {
 
     @Test
     public void should_return_Ticket_when_parkCar_given_Car() {
-        //given
         ParkingLot parkingLot1 = new ParkingLot();
         ParkingLot parkingLot2 = new ParkingLot(4);
-        List<ParkingLot> managerParkingLots = new ArrayList<>();
-        managerParkingLots.add(parkingLot1);
-        managerParkingLots.add(parkingLot2);
-        List<ParkingLot> boyParkingLots = new ArrayList<>();
-        boyParkingLots.add(parkingLot1);
-        Manager manager = new Manager(managerParkingLots);
-        ParkingBoy parkingBoy = new ParkingBoy(boyParkingLots);
+        Manager manager = new Manager(parkingLot1,parkingLot2);
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot1);
         manager.manageParkingBoy(parkingBoy);
-        //when
-        Ticket ticket1 = manager.parkCar(parkingBoy, new Car());
-        //then
+
+        Ticket ticket1 = manager.parkCar(new Car());
+
         assertNotNull(ticket1);
-        assertThat(manager.getParkingLots().get(0).getStoreCars().size(), is(1));
-        assertThat(manager.getParkingLots().get(1).getStoreCars().size(), is(0));
-        assertEquals(manager.getParkingLots().get(0), parkingBoy.getParkingLots().get(0));
     }
 
     @Test
     public void should_return_Ticket_when_manager_parkCar_given_Car() {
-        //given
         ParkingLot parkingLot1 = new ParkingLot();
         ParkingLot parkingLot2 = new ParkingLot(4);
-        List<ParkingLot> managerParkingLots = new ArrayList<>();
-        managerParkingLots.add(parkingLot1);
-        managerParkingLots.add(parkingLot2);
-        ;
-        Manager manager = new Manager(managerParkingLots);
-        //when
+        Manager manager = new Manager(parkingLot1,parkingLot2);
+
         Ticket ticket1 = manager.parkCar(new Car());
-        //then
+
         assertNotNull(ticket1);
-        assertThat(manager.getParkingLots().get(0).getStoreCars().size(), is(1));
-        assertThat(manager.getParkingLots().get(1).getStoreCars().size(), is(0));
+        assertThat(parkingLot1.getStoreCars().size(), is(1));
+        assertThat(parkingLot2.getStoreCars().size(), is(0));
     }
 
     @Test
@@ -72,20 +58,12 @@ public class ManagerTest {
         //given
         ParkingLot parkingLot1 = new ParkingLot();
         ParkingLot parkingLot2 = new ParkingLot(4);
-        List<ParkingLot> managerParkingLots = new ArrayList<>();
-        managerParkingLots.add(parkingLot1);
-        managerParkingLots.add(parkingLot2);
-        ;
-        Manager manager = new Manager(managerParkingLots);
-        List<ParkingLot> boyParkingLots = new ArrayList<>();
-        boyParkingLots.add(parkingLot1);
-        ParkingBoy parkingBoy = new ParkingBoy(boyParkingLots);
-        manager.manageParkingBoy(parkingBoy);
+
+        Manager manager = new Manager(parkingLot1,parkingLot2);
         //when
-        Ticket ticket1 = manager.parkCar(parkingBoy, null);
+        Ticket ticket1 = manager.parkCar(null);
         //then
         assertNull(ticket1);
-        assertNotEquals(systemOut().length(), 0);
     }
 
 }

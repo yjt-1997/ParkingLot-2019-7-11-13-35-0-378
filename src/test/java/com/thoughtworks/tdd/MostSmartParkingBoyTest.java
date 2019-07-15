@@ -10,7 +10,6 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.containsString;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,19 +29,18 @@ public class MostSmartParkingBoyTest {
     @Test
     public void should_parkToDifferent_lot_when_parkCar_given_several_Car() {
         //given
-        List<ParkingLot> parkingLots = new ArrayList<>();
-        parkingLots.add(new ParkingLot());
-        parkingLots.add(new ParkingLot(4));
-        MostSmartParkingBoy mostSmartParkingBoy = new MostSmartParkingBoy(parkingLots);
+        ParkingLot parkingLot1 = new ParkingLot();
+        ParkingLot parkingLot2 = new ParkingLot(4);
+        MostSmartParkingBoy mostSmartParkingBoy = new MostSmartParkingBoy(parkingLot1,parkingLot2);
         //when
         Ticket ticket1 = mostSmartParkingBoy.parkCar(new Car());
         Ticket ticket2 = mostSmartParkingBoy.parkCar(new Car());
         Ticket ticket3 = mostSmartParkingBoy.parkCar(new Car());
         //then
         assertNotNull(ticket1);
-        assertNotNull(ticket1);
+        assertNotNull(ticket2);
         assertNotNull(ticket3);
-        assertThat(mostSmartParkingBoy.getParkingLots().get(0).getStoreCars().size(),is(2));
-        assertThat(mostSmartParkingBoy.getParkingLots().get(1).getStoreCars().size(),is(1));
+        assertEquals(parkingLot1.getRemainder(),8);
+        assertEquals(parkingLot2.getRemainder(),3);
     }
 }

@@ -26,14 +26,13 @@ public class ParkingLotTest {
 
     @Test
     public void should_return_null_when_fetchCar_given_the_full_storage() {
-        //given
         ParkingLot parkingLot = new ParkingLot(1);
         Car car1 = new Car();
         Car car2 = new Car();
-        //when
+
         Ticket ticket1 = parkingLot.parkCar(car1);
         Ticket ticket2 = parkingLot.parkCar(car2);
-        //then
+
         assertEquals(car1,parkingLot.fetchCar(ticket1));
         assertNull(parkingLot.fetchCar(ticket2));
     }

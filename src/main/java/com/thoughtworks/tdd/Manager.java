@@ -1,52 +1,64 @@
 package com.thoughtworks.tdd;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class Manager extends ParkingBoy {
-    private List<ParkingBoy> parkingBoys;
+public class Manager implements Parkable {
+
+    private List<Parkable> parkables;
 
     @Override
     public Ticket parkCar(Car car) {
-        return super.parkCar(car);
+        if (car == null){
+            return null;
+        }
+        if (!isFull()) {
+            return parkables.stream().filter(parkable -> !parkable.isFull()).findFirst().get().parkCar(car);
+        }
+        System.out.print("位置不足\n");
+        return null;
     }
 
-    public Ticket parkCar(ParkingBoy parkingBoy,Car car){
-        return parkingBoy.parkCar(car);
+    @Override
+    public Car fetchCar(Ticket ticket) {
+        if (ticket == null || !containsTicket(ticket)) {
+            System.out.print("未识别的停车单\n");
+            return null;
+        }
+        return parkables.stream().filter(
+                parkingLot -> parkingLot.containsTicket(ticket)).findFirst().get().fetchCar(ticket);
     }
 
-    public void manageParkingBoy(ParkingBoy parkingBoy) {
-        parkingBoys.add(parkingBoy);
+    @Override
+    public boolean containsTicket(Ticket ticket) {
+        return parkables.stream().anyMatch(parkable -> parkable.containsTicket(ticket));
     }
 
-    public void manage(ParkingBoy parkingBoy, ParkingLot parkingLot) {
-        if (!parkingBoy.getParkingLots().contains(parkingLot))
-            parkingBoy.addParkingLot(parkingLot);
-        if(!parkingBoys.contains(parkingBoy))
-            parkingBoys.add(parkingBoy);
-
+    @Override
+    public boolean isFull() {
+        for(Parkable parkable:parkables){
+            if(!parkable.isFull()){
+                return false;
+            }
+        }
+        return true;
     }
 
-    public void addParkingLot(ParkingLot parkingLot) {
-        parkingLots.add(parkingLot);
+    public void manageParkingBoy(Parker parker) {
+        parkables.add(parker);
     }
 
-    public void setManager(){
-        for(ParkingLot parkingLot:parkingLots){
-            parkingLot.setManager(this);
+    public void setManager() {
+        for (Parkable parkable : parkables) {
+            if (parkable instanceof ParkingLot)
+                ((ParkingLot) parkable).setManager(this);
         }
     }
 
-    public Manager(List<ParkingLot> parkingLots) {
-        super(parkingLots);
-        parkingBoys = new ArrayList<>();
+    public Manager(Parkable... parkables) {
+        this.parkables = new ArrayList<>(Arrays.asList(parkables));
         setManager();
     }
-
-    public Manager(List<ParkingLot> parkingLots, List<ParkingBoy> parkingBoys) {
-        super(parkingLots);
-        this.parkingBoys = parkingBoys;
-        setManager();
-    }
-
 }

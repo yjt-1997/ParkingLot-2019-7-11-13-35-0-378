@@ -4,13 +4,13 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ParkingLot {
+public class ParkingLot implements Parkable {
     private final int capacity;
     private Map<Ticket, Car> storeCars;
     private Manager manager;
 
     public boolean isFull() {
-        return storeCars.size() >= capacity;
+        return getRemainder() == 0;
     }
 
     public Ticket parkCar(Car car) {
@@ -24,25 +24,22 @@ public class ParkingLot {
                 return null;
             }
         }
-        Ticket ticket = new Ticket(car);
+        if(isFull()){
+            System.out.print("位置不足\n");
+            return null;
+        }
+        Ticket ticket = new Ticket();
         storeCars.put(ticket, car);
         return ticket;
     }
 
+    @Override
     public Car fetchCar(Ticket ticket) {
-        Car fetchCar = null;
-        if (ticket == null) {
+        if (ticket == null || !containsTicket(ticket)) {
             System.out.print("未识别的停车单\n");
             return null;
         }
-        if (!ticket.isUsed()) {
-            ticket.useTicket();
-            fetchCar = storeCars.get(ticket);
-            storeCars.remove(ticket);
-        } else {
-            System.out.print("未识别的停车单\n");
-        }
-        return fetchCar;
+        return storeCars.remove(ticket);
     }
 
     public int getRemainder() {
@@ -50,8 +47,11 @@ public class ParkingLot {
     }
 
     public double getRemainderRate() {
-        double result = 1 - storeCars.size() / (capacity * 1.0);
-        return result * 100 / 100;
+        return getRemainder() / (double) capacity;
+    }
+
+    public boolean containsTicket(Ticket ticket) {
+        return storeCars.containsKey(ticket);
     }
 
     public ParkingLot() {
