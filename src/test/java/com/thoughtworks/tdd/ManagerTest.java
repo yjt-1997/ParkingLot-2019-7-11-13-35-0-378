@@ -1,5 +1,6 @@
 package com.thoughtworks.tdd;
 
+import com.thoughtworks.tdd.exception.InvalidCarException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,15 +56,12 @@ public class ManagerTest {
 
     @Test
     public void should_return_Message_when_parkCar_given_not_action() {
-        //given
         ParkingLot parkingLot1 = new ParkingLot();
         ParkingLot parkingLot2 = new ParkingLot(4);
-
         Manager manager = new Manager(parkingLot1,parkingLot2);
-        //when
-        Ticket ticket1 = manager.parkCar(null);
-        //then
-        assertNull(ticket1);
+
+
+        assertThrows(InvalidCarException.class,()->manager.parkCar(null));
     }
 
 }

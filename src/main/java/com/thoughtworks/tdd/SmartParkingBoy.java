@@ -1,25 +1,18 @@
 package com.thoughtworks.tdd;
 
+import com.thoughtworks.tdd.exception.NotEnoughPositionException;
+
+import java.util.Comparator;
 import java.util.List;
 
 public class SmartParkingBoy extends Parker{
 
     @Override
     public Ticket parkCar(Car car) {
-        int biggestRemainder = 0;
-        int index = 0;
-        for (int i = 0; i < parkingLots.size(); i++) {
-            ParkingLot parkingLot = parkingLots.get(i);
-            if (parkingLot.getRemainder() > biggestRemainder) {
-                biggestRemainder = parkingLot.getRemainder();
-                index = i;
-            }
+        if (isFull()) {
+            throw new NotEnoughPositionException();
         }
-        if(biggestRemainder==0){
-            System.out.print("位置不足\n");
-            return null;
-        }
-        return parkingLots.get(index).parkCar(car);
+        return parkingLots.stream().max(Comparator.comparingDouble(ParkingLot::getRemainder)).orElse(null).parkCar(car);
     }
 
     public SmartParkingBoy(ParkingLot... parkingLots) {

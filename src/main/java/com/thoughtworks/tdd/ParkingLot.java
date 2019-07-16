@@ -1,5 +1,9 @@
 package com.thoughtworks.tdd;
 
+import com.thoughtworks.tdd.exception.InvalidCarException;
+import com.thoughtworks.tdd.exception.InvalidTicketException;
+import com.thoughtworks.tdd.exception.NotEnoughPositionException;
+
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,19 +18,11 @@ public class ParkingLot implements Parkable {
     }
 
     public Ticket parkCar(Car car) {
-        if (car == null) {
-            System.out.print("请提供您的停车票\n");
-            return null;
+        if (car == null || containsCar(car)) {
+            throw new InvalidCarException();
         }
-        for (Ticket ticket : storeCars.keySet()) {
-            if (storeCars.get(ticket).equals(car)) {
-                System.out.print("这辆车已经停过了\n");
-                return null;
-            }
-        }
-        if(isFull()){
-            System.out.print("位置不足\n");
-            return null;
+        if (isFull()) {
+            throw new NotEnoughPositionException();
         }
         Ticket ticket = new Ticket();
         storeCars.put(ticket, car);
@@ -36,8 +32,7 @@ public class ParkingLot implements Parkable {
     @Override
     public Car fetchCar(Ticket ticket) {
         if (ticket == null || !containsTicket(ticket)) {
-            System.out.print("未识别的停车单\n");
-            return null;
+            throw new InvalidTicketException();
         }
         return storeCars.remove(ticket);
     }
@@ -52,6 +47,10 @@ public class ParkingLot implements Parkable {
 
     public boolean containsTicket(Ticket ticket) {
         return storeCars.containsKey(ticket);
+    }
+
+    public boolean containsCar(Car car) {
+        return storeCars.containsValue(car);
     }
 
     public ParkingLot() {

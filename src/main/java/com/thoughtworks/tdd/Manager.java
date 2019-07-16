@@ -1,5 +1,9 @@
 package com.thoughtworks.tdd;
 
+import com.thoughtworks.tdd.exception.InvalidCarException;
+import com.thoughtworks.tdd.exception.InvalidTicketException;
+import com.thoughtworks.tdd.exception.NotEnoughPositionException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,20 +16,19 @@ public class Manager implements Parkable {
     @Override
     public Ticket parkCar(Car car) {
         if (car == null){
-            return null;
+            throw new InvalidCarException();
         }
-        if (!isFull()) {
-            return parkables.stream().filter(parkable -> !parkable.isFull()).findFirst().get().parkCar(car);
+        if (isFull()) {
+            throw new NotEnoughPositionException();
+
         }
-        System.out.print("位置不足\n");
-        return null;
+        return parkables.stream().filter(parkable -> !parkable.isFull()).findFirst().get().parkCar(car);
     }
 
     @Override
     public Car fetchCar(Ticket ticket) {
         if (ticket == null || !containsTicket(ticket)) {
-            System.out.print("未识别的停车单\n");
-            return null;
+            throw new InvalidTicketException();
         }
         return parkables.stream().filter(
                 parkingLot -> parkingLot.containsTicket(ticket)).findFirst().get().fetchCar(ticket);

@@ -1,5 +1,7 @@
 package com.thoughtworks.tdd;
 
+import com.thoughtworks.tdd.exception.NotEnoughPositionException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +12,7 @@ public class ParkingBoy extends Parker {
         if (!isFull()) {
             return parkingLots.stream().filter(parkingLot -> !parkingLot.isFull()).findFirst().get().parkCar(car);
         }
-        System.out.print("位置不足\n");
-        return null;
+        throw new NotEnoughPositionException();
     }
 
     public void addParkingLot(ParkingLot parkingLot) {

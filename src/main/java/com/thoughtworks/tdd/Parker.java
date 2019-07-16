@@ -1,5 +1,7 @@
 package com.thoughtworks.tdd;
 
+import com.thoughtworks.tdd.exception.InvalidTicketException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,8 +14,7 @@ public abstract class Parker implements Parkable {
     @Override
     public Car fetchCar(Ticket ticket) {
         if (ticket == null || !containsTicket(ticket)) {
-            System.out.print("未识别的停车单\n");
-            return null;
+            throw new InvalidTicketException();
         }
         return parkingLots.stream().filter(
                 parkingLot -> parkingLot.containsTicket(ticket)).findFirst().get().fetchCar(ticket);

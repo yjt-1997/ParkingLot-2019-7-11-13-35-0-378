@@ -1,5 +1,8 @@
 package com.thoughtworks.tdd;
 
+import com.thoughtworks.tdd.exception.InvalidCarException;
+import com.thoughtworks.tdd.exception.InvalidTicketException;
+import com.thoughtworks.tdd.exception.NotEnoughPositionException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,9 +74,8 @@ public class ParkingBoyTest {
         Car car1 = new Car();
 
         parkingBoy.parkCar(car1);
-        Car car = parkingBoy.fetchCar(null);
 
-        assertNull(car);
+        assertThrows(InvalidTicketException.class,()->parkingBoy.fetchCar(null));
     }
 
     @Test
@@ -83,9 +85,8 @@ public class ParkingBoyTest {
 
         Ticket ticket1 = parkingBoy.parkCar(new Car());
         parkingBoy.fetchCar(ticket1);
-        Car result = parkingBoy.fetchCar(ticket1);
 
-        assertNull(result);
+        assertThrows(InvalidTicketException.class, () -> parkingBoy.fetchCar(ticket1));
     }
 
     @Test
@@ -95,9 +96,8 @@ public class ParkingBoyTest {
 
         Car car1 = new Car();
         parkingBoy.parkCar(car1);
-        Ticket result = parkingBoy.parkCar(car1);
 
-        assertNull(result);
+        assertThrows(InvalidCarException.class, () -> parkingBoy.parkCar(car1));
     }
 
     @Test
@@ -108,10 +108,8 @@ public class ParkingBoyTest {
 
         Ticket ticket = parkingBoy.parkCar(car1);
         parkingBoy.fetchCar(ticket);
-        Car car = parkingBoy.fetchCar(ticket);
 
-        assertNull(car);
-        assertThat(systemOut(), is("未识别的停车单\n"));
+        assertThrows(InvalidTicketException.class, () -> parkingBoy.fetchCar(ticket));
     }
 
     @Test
@@ -121,10 +119,8 @@ public class ParkingBoyTest {
         Car car1 = new Car();
 
         parkingBoy.parkCar(car1);
-        Ticket result = parkingBoy.parkCar(null);
 
-        assertNull(result);
-        assertThat(systemOut(), is("请提供您的停车票\n"));
+        assertThrows(InvalidCarException.class,()->parkingBoy.parkCar(null));
     }
 
     @Test
@@ -133,10 +129,8 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
 
         parkingBoy.parkCar(new Car());
-        Ticket result = parkingBoy.parkCar(new Car());
 
-        assertNull(result);
-        assertThat(systemOut(), is("位置不足\n"));
+        assertThrows(NotEnoughPositionException.class,()->parkingBoy.parkCar(new Car()));
     }
 
     @Test
@@ -144,7 +138,7 @@ public class ParkingBoyTest {
         List<ParkingLot> parkingLots = new ArrayList<>();
         ParkingLot parkingLot1 = new ParkingLot(1);
         ParkingLot parkingLot2 = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot1,parkingLot2);
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot1, parkingLot2);
 
         parkingBoy.parkCar(new Car());
         Ticket result = parkingBoy.parkCar(new Car());
